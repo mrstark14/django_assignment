@@ -1,0 +1,12 @@
+<h1>{{ todolist.list_name }}</h1>
+
+<ul>
+
+    {% for item in items_list %}
+
+    <li>
+        {{item.title}}:{{item.due_date}},{{item.checked}}|<a href="./delete/{{item.id}}">delete</a>|<a href = "./update/{{item.id}}">update</a>
+    </li>
+
+    {% endfor %}
+</ul>

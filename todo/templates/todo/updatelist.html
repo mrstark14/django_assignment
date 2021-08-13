@@ -1,0 +1,12 @@
+<form action="{% url 'todo:list_update' todolist.id %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+
+        <h1>Update List</h1>
+        <input type="text" name="name" id="name" value="{{todolist.list_name}}">
+
+        <input type="submit">
+    </fieldset>
+
+
+</form>

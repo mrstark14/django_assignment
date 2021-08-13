@@ -1,0 +1,11 @@
+{% if todolists %}
+
+    <ul>
+        {% for todolist in todolists %}
+        <li><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a>|<a href="./delete/{{todolist.id}}">delete</a>|<a href="./update/{{todolist.id}}">update</a></li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
+<a href="/todo/createlist">Click here to add a new list</a><br>
+<a href="/todo/createitem">Click here to add a new item</a>

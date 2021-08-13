@@ -1,0 +1,29 @@
+<form action="{% url 'todo:item_update' Todolist.id todoitem.id%}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+
+        <h1>Update Item</h1>
+        <label for="title">Title: </label>
+        <input type="text" name="title" id="title" value="{{todoitem.title}}">
+        <br><br>
+        <label for="due_date">Due Date: </label>
+        <input type="date" name="due_date" id="due_date" value="{{todoitem.due_date}}">
+        <br><br>
+        <label for="list_id">Todo List: </label>
+        <select id="list_id" name="list_id">
+            {% for todolist in todolists %}
+            <option value="{{todolist.id}}">{{todolist.list_name}}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        Checked:
+        <br>
+        <input type="radio" name="checked" value="yes">YES 
+        <br>
+        <input type="radio" name="checked" value="no">NO 
+        <br><br>
+        <input type="submit">
+    </fieldset>
+
+
+</form>

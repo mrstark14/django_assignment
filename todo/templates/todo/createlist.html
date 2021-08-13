@@ -1,0 +1,12 @@
+<form action="{% url 'todo:list_create' %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+
+        <h1>Create New List</h1>
+        <input type="text" name="name" id="name">
+
+        <input type="submit">
+    </fieldset>
+
+
+</form>
