@@ -2,7 +2,7 @@
 
     <ul>
         {% for todolist in todolists %}
-        <li><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a>|<a href="./delete/{{todolist.id}}">delete</a>|<a href="./update/{{todolist.id}}">update</a></li>
+        <li><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a>|<a href="/todo/delete/{{todolist.id}}">delete</a>|<a href="/todo/update/{{todolist.id}}">update</a></li>
         {% endfor %}
     </ul>
 

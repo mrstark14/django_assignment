@@ -9,13 +9,6 @@
         <label for="due_date">Due Date: </label>
         <input type="date" name="due_date" id="due_date" value="{{todoitem.due_date}}">
         <br><br>
-        <label for="list_id">Todo List: </label>
-        <select id="list_id" name="list_id">
-            {% for todolist in todolists %}
-            <option value="{{todolist.id}}">{{todolist.list_name}}</option>
-            {% endfor %}
-        </select>
-        <br><br>
         Checked:
         <br>
         <input type="radio" name="checked" value="yes">YES 

@@ -5,8 +5,9 @@
     {% for item in items_list %}
 
     <li>
-        {{item.title}}:{{item.due_date}},{{item.checked}}|<a href="./delete/{{item.id}}">delete</a>|<a href = "./update/{{item.id}}">update</a>
+       {{item.title}}:{{item.due_date}},{{item.checked}}|<a href="/todo/{{item.todo_list.id}}/delete/{{item.id}}">delete</a>|<a href = "/todo/{{item.todo_list.id}}/update/{{item.id}}">update</a> 
     </li>
 
     {% endfor %}
+    <a href = "/todo/{{todolist.id}}/createitem">Click here to add new item</a>
 </ul>

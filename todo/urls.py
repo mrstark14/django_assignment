@@ -11,5 +11,6 @@ urlpatterns = [
     path('delete/<int:list_id>/', deletelist, name="list_delete" ),
     path('<int:list_id>/delete/<int:item_id>/', deleteitem, name='item_delete'),
     path('update/<int:list_id>/', updatelist, name='list_update'),
-    path('<int:List_id>/update/<int:item_id>/', updateitem, name = 'item_update')
+    path('<int:List_id>/update/<int:item_id>/', updateitem, name = 'item_update'),
+    path('<int:List_id>/createitem/', createitem, name = 'create_item'),
 ]

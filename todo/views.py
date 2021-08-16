@@ -1,9 +1,13 @@
+from django.db.utils import Error
+from django.http.response import HttpResponseNotAllowed
 from django.shortcuts import render
 from django.http import HttpResponse,Http404
 from django.template import loader
 
 from .models import TodoList
 from .models import TodoItem
+from django.db import IntegrityError
+
 
 # Create your views here.
 
@@ -45,39 +49,54 @@ def detail(request,list_id):
 def createlist(request):
     if request.method == "GET":
         return render(request, 'todo/createlist.html')
-
-    name = request.POST["name"]
-    TodoList.objects.create(list_name=name)
-    lists = TodoList.objects.all()
-    context = {
-        'todolists': lists,
-    }
-    return render(request, 'todo/index.html', context)
-
-
-def createitem(request):
-    if request.method == "GET":
-        todolists = TodoList.objects.all()
-        items = TodoItem.objects.all()
+    try:
+        name = request.POST["name"]
+        TodoList.objects.create(list_name=name)
+        lists = TodoList.objects.all()
         context = {
-        'todolists': todolists,
-        'todoitems': items,
+            'todolists': lists,
         }
-        return render(request, 'todo/createitem.html', context)
-    title_name=request.POST['title']
-    duedate=request.POST['due_date']
-    list_id=int(request.POST['list_id'])
-    check=request.POST['checked']
-    t=TodoList.objects.get(id = list_id)
-    if check=="yes":
-        TodoItem.objects.create(title=title_name,checked=True,due_date=duedate,todo_list=t)
-    else:
-        TodoItem.objects.create(title=title_name,checked=False,due_date=duedate,todo_list=t)
-    lists = TodoList.objects.all()
-    context = {
-        'todolists':lists,
-    }
-    return render(request, 'todo/index.html', context)
+        return render(request, 'todo/index.html', context)
+    except IntegrityError:
+        raise Error("Error: List name already exists")
+
+
+def createitem(request, List_id=0):
+    if request.method == "GET":
+        if List_id == 0:
+            todolists = TodoList.objects.all()
+            items = TodoItem.objects.all()
+            context = {
+            'todolists': todolists,
+            'todoitems': items,
+            }
+            return render(request, 'todo/createitem.html', context)
+            
+        else:
+            todolists = TodoList.objects.filter(id = List_id)
+            items = TodoItem.objects.all()
+            context = {
+            'todolists': todolists,
+            'todoitems': items,
+            }
+            return render(request, 'todo/createitem.html', context)
+    try:
+        title_name=request.POST['title']
+        duedate=request.POST['due_date']
+        list_id=int(request.POST['list_id'])
+        check=request.POST['checked']
+        t=TodoList.objects.get(id = list_id)
+        if check=="yes":
+            TodoItem.objects.create(title=title_name,checked=True,due_date=duedate,todo_list=t)
+        else:
+            TodoItem.objects.create(title=title_name,checked=False,due_date=duedate,todo_list=t)
+        lists = TodoList.objects.all()
+        context = {
+            'todolists':lists,
+        }
+        return render(request, 'todo/index.html', context)
+    except IntegrityError:
+        raise Error("Item name already exitst in given list")
 def deletelist(request, list_id):
     try:
         todolist=TodoList.objects.get(id=list_id)
@@ -149,9 +168,7 @@ def updateitem(request, item_id, List_id):
         return render(request, 'todo/updateitem.html', context)
     title_name=request.POST['title']
     duedate=request.POST['due_date']
-    list_id=int(request.POST['list_id'])
     check=request.POST['checked']
-    t=TodoList.objects.get(id = list_id)
     if check == "yes":
         todoitem.title = title_name
         todoitem.save()
@@ -159,7 +176,6 @@ def updateitem(request, item_id, List_id):
         todoitem.save()
         todoitem.checked = True
         todoitem.save()
-        todoitem.todo_list = t
         todoitem.save()
     else:
         todoitem.title = title_name
@@ -168,7 +184,6 @@ def updateitem(request, item_id, List_id):
         todoitem.save()
         todoitem.checked = False
         todoitem.save()
-        todoitem.todo_list = t
         todoitem.save()
     items_list=TodoItem.objects.filter(todo_list=Todolist)
     context={
